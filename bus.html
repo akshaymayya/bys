@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NMAMIT Bus Timings — Nitte → Mangalore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      /* Color system: 1 primary, 3 neutrals, 1 accent */
+      --bg: #f7f7f8;
+      --card: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --primary: #0a66c2;
+      --accent: #16a34a;
+      --radius: 10px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans",sans-serif;line-height:1.55}
+    a{color:var(--primary);text-decoration:none}
+    .container{max-width:940px;margin:0 auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    header h1{margin:0;font-size:20px;letter-spacing:.2px}
+    header .sub{font-size:13px;color:var(--muted)}
+    .card{background:var(--card);border:1px solid #e5e7eb;border-radius:var(--radius);padding:16px}
+    .stack{display:flex;flex-direction:column;gap:12px}
+    .row{display:flex;gap:12px}
+    .row.wrap{flex-wrap:wrap}
+    .muted{color:var(--muted)}
+    .tag{display:inline-block;font-size:12px;color:#0b3a6b;background:#e8f1fb;border:1px solid #cfe3fb;border-radius:999px;padding:2px 8px}
+    .tag.green{color:#0a5f2d;background:#e9f8ef;border-color:#c9f0d9}
+    .btn{appearance:none;border:1px solid #cbd5e1;background:var(--card);color:var(--fg);padding:10px 14px;border-radius:8px;font-weight:600;cursor:pointer}
+    .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+    .btn.link{border:0;background:transparent;color:var(--primary);padding:0 4px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:13px;color:var(--muted)}
+    .field input{padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;background:#fff}
+    .auth{max-width:460px;margin:28px auto}
+    .auth .tabs{display:flex;gap:8px;margin-bottom:8px}
+    .auth .note{font-size:12px;color:var(--muted)}
+    table{width:100%;border-collapse:collapse}
+    th, td{padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:left}
+    th{font-size:12px;color:var(--muted);font-weight:600}
+    tbody tr:hover{background:#fafafa}
+    .pill{font-size:12px;border:1px solid #e5e7eb;border-radius:999px;padding:2px 8px;background:#fff}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width: 720px){
+      .grid{grid-template-columns: 2fr 1fr}
+    }
+    footer{margin-top:24px;font-size:12px;color:var(--muted)}
+    .hidden{display:none !important}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>NMAMIT Bus Timings</h1>
+        <div class="sub">Updated from CSV links</div>
+      </div>
+      <div id="userBox" class="row">
+        <span id="welcome" class="muted"></span>
+        <button id="logoutBtn" class="btn hidden" type="button">Log out</button>
+      </div>
+    </header>
+
+     Auth Gate 
+    <section id="authGate" class="auth card">
+      <div class="tabs">
+        <button id="tabSignIn" class="btn">Sign In</button>
+        <button id="tabSignUp" class="btn">Sign Up</button>
+      </div>
+      <form id="signInForm" class="stack">
+        <div class="field">
+          <label for="inEmail">Email</label>
+          <input id="inEmail" type="email" required placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label for="inPass">Password</label>
+          <input id="inPass" type="password" required placeholder="••••••••" />
+        </div>
+        <button class="btn primary" type="submit">Sign In</button>
+        <div class="note">This is a simple demo sign-in stored in your browser.</div>
+      </form>
+
+      <form id="signUpForm" class="stack hidden">
+        <div class="field">
+          <label for="upName">Full name</label>
+          <input id="upName" type="text" required placeholder="Student name" />
+        </div>
+        <div class="field">
+          <label for="upEmail">Email</label>
+          <input id="upEmail" type="email" required placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label for="upPass">Password</label>
+          <input id="upPass" type="password" required placeholder="Create a password" />
+        </div>
+        <button class="btn primary" type="submit">Create Account</button>
+        <div class="note">No server is used. Your account is saved locally.</div>
+      </form>
+    </section>
+
+     Main Content 
+    <main id="app" class="stack hidden">
+      <section class="grid">
+        <div class="stack">
+          <div class="card stack">
+            <div class="row wrap" style="align-items:center;justify-content:space-between">
+              <h2 style="margin:0;font-size:18px">Departures — Nitte → Mangalore</h2>
+              <span class="tag">From: Belman/Padubidri CSV</span>
+            </div>
+            <div class="muted" style="font-size:13px">
+              Filtered where Destination = Mangalore.
+            </div>
+            <div class="card" style="padding:0">
+              <table aria-label="Nitte to Mangalore timetable">
+                <thead>
+                  <tr>
+                    <th style="width:100px">Time</th>
+                    <th>Bus</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody id="tblMlr">
+                   Filled by JS 
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card stack">
+            <div class="row wrap" style="align-items:center;justify-content:space-between">
+              <h2 style="margin:0;font-size:18px">Departures — Nitte → Udupi</h2>
+              <span class="tag">From: Belman/Padubidri CSV</span>
+            </div>
+            <div class="muted" style="font-size:13px">
+              Filtered where Destination = Udupi.
+            </div>
+            <div class="card" style="padding:0">
+              <table aria-label="Nitte to Udupi timetable">
+                <thead>
+                  <tr>
+                    <th style="width:100px">Time</th>
+                    <th>Bus</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody id="tblUdupi">
+                   Filled by JS 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="card stack">
+            <div class="row wrap" style="align-items:center;justify-content:space-between">
+              <h2 style="margin:0;font-size:18px">Departures — Nitte → Karkala</h2>
+              <span class="tag">From: Karkala CSV</span>
+            </div>
+            <div class="card" style="padding:0">
+              <table aria-label="Nitte to Karkala timetable">
+                <thead>
+                  <tr>
+                    <th style="width:100px">Time</th>
+                    <th>Bus</th>
+                    <th>Type</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody id="tblKarkala">
+                   Filled by JS 
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card stack">
+            <div class="row wrap" style="align-items:center;justify-content:space-between">
+              <h2 style="margin:0;font-size:18px">Morning Arrivals — Karkala Bypass → Nitte</h2>
+              <span class="tag green">Window: 7:30–9:00</span>
+            </div>
+            <div class="card" style="padding:0">
+              <table aria-label="Karkala Bypass to Nitte morning arrivals">
+                <thead>
+                  <tr>
+                    <th style="width:120px">Start Time</th>
+                    <th>Bus</th>
+                    <th>Type</th>
+                    <th style="width:140px">Reaches Nitte</th>
+                  </tr>
+                </thead>
+                <tbody id="tblInbound">
+                   Filled by JS 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        NMAMIT, Nitte · Timetables load live from the linked CSV files.
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    (function auth(){
+      const authKey = "nmamit_auth_user";
+      const usersKey = "nmamit_auth_users";
+      const authGate = document.getElementById("authGate");
+      const app = document.getElementById("app");
+      const welcome = document.getElementById("welcome");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const tabSignIn = document.getElementById("tabSignIn");
+      const tabSignUp = document.getElementById("tabSignUp");
+      const signInForm = document.getElementById("signInForm");
+      const signUpForm = document.getElementById("signUpForm");
+
+      function getUsers(){
+        try{ return JSON.parse(localStorage.getItem(usersKey) || "{}"); }
+        catch{ return {}; }
+      }
+      function setUsers(map){ localStorage.setItem(usersKey, JSON.stringify(map)); }
+      function setAuthed(user){ localStorage.setItem(authKey, JSON.stringify(user)); }
+      function getAuthed(){
+        try{ return JSON.parse(localStorage.getItem(authKey) || "null"); }
+        catch{ return null; }
+      }
+      function render(){
+        const u = getAuthed();
+        if(u){
+          authGate.classList.add("hidden");
+          app.classList.remove("hidden");
+          welcome.textContent = "Hello, " + (u.name || u.email);
+          logoutBtn.classList.remove("hidden");
+        }else{
+          authGate.classList.remove("hidden");
+          app.classList.add("hidden");
+          welcome.textContent = "";
+          logoutBtn.classList.add("hidden");
+        }
+      }
+      logoutBtn.addEventListener("click", ()=>{ localStorage.removeItem(authKey); render(); });
+
+      // Tab switching
+      tabSignIn.addEventListener("click", ()=>{
+        tabSignIn.classList.add("primary");
+        tabSignUp.classList.remove("primary");
+        signInForm.classList.remove("hidden");
+        signUpForm.classList.add("hidden");
+      });
+      tabSignUp.addEventListener("click", ()=>{
+        tabSignUp.classList.add("primary");
+        tabSignIn.classList.remove("primary");
+        signUpForm.classList.remove("hidden");
+        signInForm.classList.add("hidden");
+      });
+      // Default to Sign In
+      tabSignIn.classList.add("primary");
+
+      // Sign Up
+      signUpForm.addEventListener("submit", (e)=>{
+        e.preventDefault();
+        const name = document.getElementById("upName").value.trim();
+        const email = document.getElementById("upEmail").value.trim().toLowerCase();
+        const pass = document.getElementById("upPass").value;
+        if(!name || !email || !pass){ alert("Please fill all fields."); return; }
+        const users = getUsers();
+        if(users[email]){ alert("Account already exists. Please sign in."); return; }
+        users[email] = { email, pass, name };
+        setUsers(users);
+        setAuthed({ email, name });
+        render();
+      });
+
+      // Sign In
+      signInForm.addEventListener("submit", (e)=>{
+        e.preventDefault();
+        const email = document.getElementById("inEmail").value.trim().toLowerCase();
+        const pass = document.getElementById("inPass").value;
+        const users = getUsers();
+        if(!users[email] || users[email].pass !== pass){
+          alert("Invalid credentials.");
+          return;
+        }
+        setAuthed({ email, name: users[email].name });
+        render();
+      });
+
+      render();
+    })();
+
+    function parseCSV(text){
+      const rows = [];
+      let i = 0, field = "", row = [], inQuotes = false;
+      while(i < text.length){
+        const c = text[i];
+        if(c === '"'){
+          if(inQuotes && text[i+1] === '"'){ field += '"'; i += 2; continue; }
+          inQuotes = !inQuotes; i++; continue;
+        }
+        if(c === ',' && !inQuotes){ row.push(field); field = ""; i++; continue; }
+        if((c === '\n' || c === '\r') && !inQuotes){
+          if(field !== "" || row.length){ row.push(field); rows.push(row); }
+          field = ""; row = [];
+          if(c === '\r' && text[i+1] === '\n') i++;
+          i++; continue;
+        }
+        field += c;
+        i++;
+      }
+      if(field !== "" || row.length){ row.push(field); rows.push(row); }
+      return rows;
+    }
+
+    (function loadAndRender(){
+      const URL_BELMAN_PADUBIDRI = "https://raw.githubusercontent.com/bhvsh/nittestop-csv/main/From%20Nitte%20to%20Belman-Padubidri%20(Udupi-Mangalore)%202c4fffeaf3dd4f54a91b2d2a9e04ca7e.csv";
+      const URL_KARKALA = "https://raw.githubusercontent.com/bhvsh/nittestop-csv/main/From%20Nitte%20to%20Karkala%20b05bfb8455d249c5a9cf73d278fd9cfd.csv";
+      const URL_INBOUND = "https://raw.githubusercontent.com/bhvsh/nittestop-csv/main/From%20Karkala%20Bypass%20to%20Nitte%20(Morning%207%2030AM%20to%209A%206ecbdaaef5c344ba937443584029bff3.csv";
+
+      function safeText(cell){ return (cell || "").trim(); }
+
+      function renderBelmanPadubidri(text){
+        const rows = parseCSV(text);
+        if(!rows.length) return;
+        const header = rows.shift();
+        const hMap = Object.fromEntries(header.map((h,i)=>[h.toLowerCase(), i]));
+        const tIdx = hMap["time"], nIdx = hMap["name"], tyIdx = hMap["type"], dIdx = hMap["destination"];
+
+        const tbodyM = document.getElementById("tblMlr");
+        const tbodyU = document.getElementById("tblUdupi");
+        tbodyM.innerHTML = ""; tbodyU.innerHTML = "";
+
+        const toMlr = rows.filter(r => safeText(r[dIdx]).toLowerCase() === "mangalore");
+        const toUdp = rows.filter(r => safeText(r[dIdx]).toLowerCase() === "udupi");
+
+        function rowEl(r, cols){
+          const tr = document.createElement("tr");
+          for(const c of cols){
+            const td = document.createElement("td");
+            td.textContent = safeText(c);
+            tr.appendChild(td);
+          }
+          return tr;
+        }
+
+        if(toMlr.length){
+          for(const r of toMlr){
+            tbodyM.appendChild(rowEl(r, [r[tIdx], r[nIdx], r[tyIdx]]));
+          }
+        }else{
+          const tr = document.createElement("tr"); const td = document.createElement("td");
+          td.colSpan = 3; td.className = "muted"; td.textContent = "No timings for Mangalore.";
+          tr.appendChild(td); tbodyM.appendChild(tr);
+        }
+
+        if(toUdp.length){
+          for(const r of toUdp){
+            tbodyU.appendChild(rowEl(r, [r[tIdx], r[nIdx], r[tyIdx]]));
+          }
+        }else{
+          const tr = document.createElement("tr"); const td = document.createElement("td");
+          td.colSpan = 3; td.className = "muted"; td.textContent = "No timings for Udupi.";
+          tr.appendChild(td); tbodyU.appendChild(tr);
+        }
+      }
+
+      function renderKarkala(text){
+        const rows = parseCSV(text);
+        if(!rows.length) return;
+        const header = rows.shift();
+        const hMap = Object.fromEntries(header.map((h,i)=>[h.toLowerCase(), i]));
+        const tIdx = hMap["time"], nIdx = hMap["name"], tyIdx = hMap["type"], sIdx = hMap["source"];
+
+        const tbody = document.getElementById("tblKarkala");
+        tbody.innerHTML = "";
+        if(rows.length){
+          for(const r of rows){
+            const tr = document.createElement("tr");
+            const t1 = document.createElement("td"); t1.textContent = safeText(r[tIdx]);
+            const t2 = document.createElement("td"); t2.textContent = safeText(r[nIdx]);
+            const t3 = document.createElement("td"); t3.textContent = safeText(r[tyIdx]);
+            const t4 = document.createElement("td"); t4.textContent = safeText(r[sIdx]);
+            tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3); tr.appendChild(t4);
+            tbody.appendChild(tr);
+          }
+        }else{
+          const tr = document.createElement("tr"); const td = document.createElement("td");
+          td.colSpan = 4; td.className = "muted"; td.textContent = "No timings for Karkala.";
+          tr.appendChild(td); tbody.appendChild(tr);
+        }
+      }
+
+      function renderInbound(text){
+        const rows = parseCSV(text);
+        if(!rows.length) return;
+        const header = rows.shift();
+        const hMap = Object.fromEntries(header.map((h,i)=>[h.toLowerCase(), i]));
+        const tIdx = hMap["time"], nIdx = hMap["name"], tyIdx = hMap["type"], rnIdx = hMap["reaches nitte at"];
+
+        const tbody = document.getElementById("tblInbound");
+        tbody.innerHTML = "";
+        if(rows.length){
+          for(const r of rows){
+            const tr = document.createElement("tr");
+            const t1 = document.createElement("td"); t1.textContent = safeText(r[tIdx]);
+            const t2 = document.createElement("td"); t2.textContent = safeText(r[nIdx]);
+            const t3 = document.createElement("td"); t3.textContent = safeText(r[tyIdx]);
+            const t4 = document.createElement("td"); t4.textContent = safeText(r[rnIdx]);
+            tr.appendChild(t1); tr.appendChild(t2); tr.appendChild(t3); tr.appendChild(t4);
+            tbody.appendChild(tr);
+          }
+        }else{
+          const tr = document.createElement("tr"); const td = document.createElement("td");
+          td.colSpan = 4; td.className = "muted"; td.textContent = "No arrivals found in the window.";
+          tr.appendChild(td); tbody.appendChild(tr);
+        }
+      }
+
+      // Fetch all in parallel
+      Promise.all([
+        fetch(URL_BELMAN_PADUBIDRI).then(r => r.ok ? r.text() : Promise.reject("Failed Belman/Padubidri")),
+        fetch(URL_KARKALA).then(r => r.ok ? r.text() : Promise.reject("Failed Karkala")),
+        fetch(URL_INBOUND).then(r => r.ok ? r.text() : Promise.reject("Failed Inbound")),
+      ]).then(([csv1, csv2, csv3])=>{
+        renderBelmanPadubidri(csv1);
+        renderKarkala(csv2);
+        renderInbound(csv3);
+      }).catch((err)=>{
+        console.warn("Failed to load one or more CSV files:", err);
+        const msg = "Unable to load some timetable data. Please retry later.";
+        [["tblMlr",3],["tblUdupi",3],["tblKarkala",4],["tblInbound",4]].forEach(([id, span])=>{
+          const el = document.getElementById(id);
+          if(el && !el.children.length){
+            const tr = document.createElement("tr"); const td = document.createElement("td");
+            td.colSpan = span; td.className = "muted"; td.textContent = msg;
+            tr.appendChild(td); el.appendChild(tr);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
